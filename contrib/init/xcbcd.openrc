@@ -1,0 +1,93 @@
+#!/sbin/openrc-run
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/xcbc/.xcbc" ]; then
+	XCBCD_DEFAULT_DATADIR="/var/lib/xcbc/.xcbc"
+else
+	XCBCD_DEFAULT_DATADIR="/var/lib/xcbcd"
+fi
+
+XCBCD_CONFIGFILE=${XCBCD_CONFIGFILE:-/etc/xcbc/xcbc.conf}
+XCBCD_PIDDIR=${XCBCD_PIDDIR:-/var/run/xcbcd}
+XCBCD_PIDFILE=${XCBCD_PIDFILE:-${XCBCD_PIDDIR}/xcbcd.pid}
+XCBCD_DATADIR=${XCBCD_DATADIR:-${XCBCD_DEFAULT_DATADIR}}
+XCBCD_USER=${XCBCD_USER:-${XCBC_USER:-xcbc}}
+XCBCD_GROUP=${XCBCD_GROUP:-xcbc}
+XCBCD_BIN=${XCBCD_BIN:-/usr/bin/xcbcd}
+XCBCD_NICE=${XCBCD_NICE:-${NICELEVEL:-0}}
+XCBCD_OPTS="${XCBCD_OPTS:-${XCBC_OPTS}}"
+
+name="XCBC Core Daemon"
+description="XCBC cryptocurrency P2P network daemon"
+
+command="/usr/bin/xcbcd"
+command_args="-pid=\"${XCBCD_PIDFILE}\" \
+		-conf=\"${XCBCD_CONFIGFILE}\" \
+		-datadir=\"${XCBCD_DATADIR}\" \
+		-daemon \
+		${XCBCD_OPTS}"
+
+required_files="${XCBCD_CONFIGFILE}"
+start_stop_daemon_args="-u ${XCBCD_USER} \
+			-N ${XCBCD_NICE} -w 2000"
+pidfile="${XCBCD_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${XCBCD_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${XCBCD_USER}:${XCBCD_GROUP}" \
+	"${XCBCD_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${XCBCD_USER}:${XCBCD_GROUP}" \
+	"${XCBCD_PIDDIR}"
+
+	checkpath -f \
+	-o "${XCBCD_USER}:${XCBCD_GROUP}" \
+	-m 0660 \
+	"${XCBCD_CONFIGFILE}"
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if grep -qs '^rpcuser=' "${XCBCD_CONFIGFILE}" && \
+		! grep -qs '^rpcpassword=' "${XCBCD_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run xcbcd."
+		eerror "The setting must appear in ${XCBCD_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following "
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"XCBC Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}

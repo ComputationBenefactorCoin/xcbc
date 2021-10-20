@@ -1,0 +1,33 @@
+# /etc/conf.d/xcbcd: config file for /etc/init.d/xcbcd
+
+# Config file location
+#XCBCD_CONFIGFILE="/etc/xcbc/xcbc.conf"
+
+# What directory to write pidfile to?  (created and owned by $XCBCD_USER)
+#XCBCD_PIDDIR="/var/run/xcbcd"
+
+# What filename to give the pidfile
+#XCBCD_PIDFILE="${XCBCD_PIDDIR}/xcbcd.pid"
+
+# Where to write xcbcd data (be mindful that the blockchain is large)
+#XCBCD_DATADIR="/var/lib/xcbcd"
+
+# User and group to own xcbcd process
+#XCBCD_USER="xcbc"
+#XCBCD_GROUP="xcbc"
+
+# Path to xcbcd executable
+#XCBCD_BIN="/usr/bin/xcbcd"
+
+# Nice value to run xcbcd under
+#XCBCD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#XCBCD_OPTS=""
+
+# The timeout in seconds OpenRC will wait for xcbcd to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+XCBCD_SIGTERM_TIMEOUT=600
