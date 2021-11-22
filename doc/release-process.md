@@ -206,7 +206,7 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
 ```
 
 
-- Upload to the xcbccore.org server (`/var/www/bin/xcbc-core-${VERSION}/`):
+- Upload to the computationbenefactorcoin.com server (`/var/www/bin/xcbc-core-${VERSION}/`):
     1. The contents of each `./xcbc/guix-build-${VERSION}/output/${HOST}/` directory, except for
        `*-debug*` files.
 
@@ -219,11 +219,11 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
        for troubleshooting by developers. It is assumed that anyone that is
        interested in debugging can run guix to generate the files for
        themselves. To avoid end-user confusion about which file to pick, as well
-       as save storage space *do not upload these to the xcbccore.org server,
+       as save storage space *do not upload these to the computationbenefactorcoin.com server,
        nor put them in the torrent*.
 
        ```sh
-       find guix-build-${VERSION}/output/ -maxdepth 2 -type f -not -name "SHA256SUMS.part" -and -not -name "*debug*" -exec scp {} user@xcbccore.org:/var/www/bin/xcbc-core-${VERSION} \;
+       find guix-build-${VERSION}/output/ -maxdepth 2 -type f -not -name "SHA256SUMS.part" -and -not -name "*debug*" -exec scp {} user@computationbenefactorcoin.com:/var/www/bin/xcbc-core-${VERSION} \;
        ```
 
     2. The `SHA256SUMS` file
@@ -242,18 +242,18 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
   ```
 
   Insert the magnet URI into the announcement sent to mailing lists. This permits
-  people without access to `xcbccore.org` to download the binary distribution.
+  people without access to `computationbenefactorcoin.com` to download the binary distribution.
   Also put it into the `optional_magnetlink:` slot in the YAML file for
-  xcbccore.org.
+  computationbenefactorcoin.com.
 
 - Update other repositories and websites for new version
 
-  - xcbccore.org blog post
+  - computationbenefactorcoin.com blog post
 
-  - xcbccore.org maintained versions update:
-    [table](https://github.com/ComputationBenefactorCoin/xcbc/xcbccore.org/commits/master/_includes/posts/maintenance-table.md)
+  - computationbenefactorcoin.com maintained versions update:
+    [table](https://github.com/ComputationBenefactorCoin/xcbc/computationbenefactorcoin.com/commits/master/_includes/posts/maintenance-table.md)
 
-  - xcbccore.org RPC documentation update
+  - computationbenefactorcoin.com RPC documentation update
 
       - Install [golang](https://golang.org/doc/install)
 
@@ -261,7 +261,7 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
 
       - Run xcbcd on regtest
 
-      - Clone the [xcbccore.org repository](https://github.com/ComputationBenefactorCoin/xcbc/xcbccore.org)
+      - Clone the [computationbenefactorcoin.com repository](https://github.com/ComputationBenefactorCoin/xcbc/computationbenefactorcoin.com)
 
       - Run: `go run generate.go` while being in `contrib/doc-gen` folder, and with xcbc-cli in PATH
 

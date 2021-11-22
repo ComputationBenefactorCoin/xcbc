@@ -5,7 +5,7 @@ Setup
 ---------------------
 XCBC Core is the original XCBC client and it builds the backbone of the network. It downloads and, by default, stores the entire history of XCBC transactions, which requires a few hundred gigabytes of disk space. Depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
 
-To download XCBC Core, visit [xcbccore.org](https://computationbenefactorcoin.com/en/download/).
+To download XCBC Core, visit [computationbenefactorcoin.com](https://computationbenefactorcoin.com/en/download/).
 
 Running
 ---------------------
