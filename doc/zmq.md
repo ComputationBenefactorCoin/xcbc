@@ -82,8 +82,8 @@ The high water mark value must be an integer greater than or equal to 0.
 
 For instance:
 
-    $ xcbcd -zmqpubhashtx=tcp://127.0.0.1:28332 \
-               -zmqpubhashtx=tcp://192.168.1.2:28332 \
+    $ xcbcd -zmqpubhashtx=tcp://127.0.0.1:28082 \
+               -zmqpubhashtx=tcp://192.168.1.2:28082 \
                -zmqpubrawtx=ipc:///tmp/xcbcd.tx.raw \
                -zmqpubhashtxhwm=10000
 
